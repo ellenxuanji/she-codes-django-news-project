@@ -1,0 +1,50 @@
+    {% extends "base.html" %}
+    {% load static %}
+
+    {% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{% static 'news/styles.css' %}">
+    {% endblock %}
+
+    {% block content %}
+
+    {% if request.user.is_authenticated %}
+        <div class="welcome">
+            <a>Welcome back {{ user.username }} <span>&#128075;</span></a>
+            {% comment %} <a href="{% url 'news:newStory' %}">Add New Story</a> {% endcomment %}
+            <a href="{% url 'news:newStory' %}" target="_parent"><button>Add New Story!</button></a>    
+        </div>
+
+    {% else %}
+        {% comment %} <p> Please <a href="{% url 'login' %}">login</a> or <a href="{% url 'users:createAccount' %}">create account</a> to create story.</p> {% endcomment %}
+    {% endif %}
+
+    <h2>Latest News</h2>
+
+    <div id="latest-stories">
+        {% if latest_stories %}
+            {% for story in latest_stories %}
+                {%include "./storyCard.html" with story=story position=forloop.counter %}
+                <!-- <p>{{ story.title }}</p> -->
+            {% endfor %}
+        {% else %}
+            <p>No stories are available.</p>
+        {% endif %}
+    </div>
+
+    <h2>All News</h2>
+    <div id="all-stories">
+        {% if latest_stories %}
+            {% for story in all_stories %}
+                {% include "./storyCard.html" with story=story %}
+                <!-- <p>{{ story.title }}</p> -->
+            {% endfor %}
+        {% else %}
+            <p>No stories are available.</p>
+        {% endif %}
+    </div>
+
+    {% endblock %}
+
+
+
+
